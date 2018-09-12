@@ -87,7 +87,6 @@ char* ISysInfoDataColloct::getSysInfoColloctData(const char * cmd)
 
 char* SysInfoDataColloct:: getSysInfo(const char * cmd)
 {
-      #if 0
 	FILE *fp = NULL;
       int ret = 0;
       int flen = 0;
@@ -167,9 +166,6 @@ char* SysInfoDataColloct:: getSysInfo(const char * cmd)
       remove(SYS_INFO_FILENAME);
       LOGD("[%s:%d] %s\n", __FUNCTION__, __LINE__, buf);
       return buf;
-      #else
-      return "this is test";
-      #endif
 }
 
 char* SysInfoDataColloct::getNetInfo(const char * cmd)
@@ -225,17 +221,6 @@ char* SysInfoDataColloct::getNetInfo(const char * cmd)
 char* SysInfoDataColloct::getTSInfo(const char * cmd)
 {
 
-}
-
-int main(int argc, char * argv[])
-{
-	ISysInfoDataColloct * colloct = new SysInfoDataColloct();
-
-	printf("[%s][%d]! value:%s\n", __func__, __LINE__, colloct->getSysInfoColloctData(STRING_CPU_CMD));
-
-	delete colloct;
-
-	return 0;
 }
 
 

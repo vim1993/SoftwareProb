@@ -16,16 +16,26 @@ class IDataProvider {
       protected:
             pthread_t mtid;
 
-            NeedleCommonMsg * mTSDataMsgQue;
-            NeedleCommonMsg * mReportMsgQue;
+            bool isInit;
+            bool stopTask;
+
+            void * mReportMsgQue;
 
             ISysInfoDataColloct * mSYSINFO;
 
       public:
-            virtual void init(void) = 0;
-            virtual void RegisterContentCallBack(void *param, void * registerCb) = 0; //注册回调函数相关参数
+            virtual bool init(void) = 0;
+            virtual void deinit(void) = 0;
+
+            virtual bool RegisterContentCallBack(void *param, void * registerCb) = 0; //注册回调函数相关参数
             virtual char * getSysInfo(const char * cmd) = 0;
 };
+
+typedef struct JNI_ENV_s {
+      JNIEnv * mEnv;
+      JavaVM * mJvm;
+      jobject mObj;
+}JNV_ENV_t;
 
 class DataProviderAndroid : public IDataProvider {
 
@@ -35,13 +45,19 @@ class DataProviderAndroid : public IDataProvider {
 
             static DataProviderAndroid instance;
 
+            JNV_ENV_t mJNIEnv;
+
+            static void * dataReport2APP_TaskProc(void * param);
+
       public:
             DataProviderAndroid * getInstance(void) {
                   return &instance;
             };//采用饿汉模式,避免多线程不安全
 
-            void init(void);
-            void RegisterContentCallBack(void *param, void * registerCb);
+            bool init(void);
+            void deinit(void);
+
+            bool RegisterContentCallBack(void *param, void * registerCb);
             char * getSysInfo(const char * cmd);
 };
 
@@ -53,13 +69,16 @@ class DataProviderNative : public IDataProvider {
 
             static DataProviderNative instance;
 
+            static void dataReport2APP_TaskProc(void * param);
+
       public:
             static DataProviderNative * getInstance(void) {
                   return &instance;
             };//采用饿汉模式,避免多线程不安全
 
-            void init(void);
-            void RegisterContentCallBack(void *param, void * registerCb);
+            bool init(void);
+            void deinit(void);
+            bool RegisterContentCallBack(void *param, void * registerCb);
             char * getSysInfo(const char * cmd);
 };
 

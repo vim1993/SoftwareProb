@@ -54,6 +54,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE    := softwareProbe.elf
 
 LOCAL_SRC_FILES := \
+	DataProvider/DataProvider.cpp \
 	DataSysInfoColloct/SysInfoDataColloct.cpp
 
 LOCAL_CXXFLAGS += --std=c++11 -O2

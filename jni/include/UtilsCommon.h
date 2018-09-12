@@ -13,6 +13,7 @@ using namespace std;
 
 #define MAX_NET_DATA_PASER 32
 
+#define MSGQUE_TS_DATA_NUM (200)
 #define MSGQUE_DATA_MAX (64 * 1024)
 
 #define  TAG    "DSMINFO8888"
@@ -42,7 +43,15 @@ using namespace std;
 	#define LOGX(...) __android_log_print(ANDROID_LOG_ERROR,TAG,__VA_ARGS__)
 #endif
 
+enum {
+	MSG_QUE_REPORT,
+	MSG_QUE_TSDATA
+};
 
+struct ts_data_s {
+      int data_len;
+      unsigned char data[2048];
+};
 
 class http_content_buf_t {
 	unsigned char buf[8 * 1024];
